@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-root',
@@ -9,16 +9,31 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 export class AppComponent implements OnInit{  
   genders = ['male', 'female'];
   signUpForm : FormGroup;
+  forBiddenUserNames = ['Chris', 'Anna'];
 
   ngOnInit(){
     this.signUpForm = new FormGroup({
-     'username' : new FormControl('Bharath', Validators.required),
-     'email': new FormControl(null, [Validators.required, Validators.email]),
-     'gender': new FormControl('male', )
+     'userData' : new FormGroup({
+      'username' : new FormControl(null, [Validators.required, this.forBiddenNames.bind(this)]),
+      'email': new FormControl(null, [Validators.required, Validators.email]),
+     }),
+     'gender': new FormControl('male'),
+     'hobbies': new FormArray([]),
     })
   }
 
   onSubmit(){
     console.log(this.signUpForm);
+  }
+
+  onAddHobbies(){
+    (<FormArray>this.signUpForm.get('hobbies')).push(new FormControl(null, [Validators.required]));
+  }
+
+  forBiddenNames(control: FormControl) : {[s : string] : boolean} {
+   if(this.forBiddenUserNames.indexOf(control.value) !== -1){
+     return {'nameIsForbidden': true };
+   }
+   return null;
   }
 }

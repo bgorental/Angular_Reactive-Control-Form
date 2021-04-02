@@ -5,3 +5,7 @@
 input.ng-invalid.ng-touched{
   border: 1px solid #b82f39;
 }
+
+input.ng-valid{
+  border: 1px solid #07b871;
+}

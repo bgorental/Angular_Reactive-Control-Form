@@ -1,5 +1,9 @@
+import { ThisReceiver } from '@angular/compiler';
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
+
+import { Observable } from 'rxjs';
+import { max } from 'rxjs-compat/operator/max';
 
 @Component({
   selector: 'app-root',
@@ -15,11 +19,34 @@ export class AppComponent implements OnInit{
     this.signUpForm = new FormGroup({
      'userData' : new FormGroup({
       'username' : new FormControl(null, [Validators.required, this.forBiddenNames.bind(this)]),
-      'email': new FormControl(null, [Validators.required, Validators.email]),
+      'email': new FormControl(null, [Validators.required, Validators.email], [this.forBiddenEmails.bind(this)]),
      }),
      'gender': new FormControl('male'),
-     'hobbies': new FormArray([]),
-    })
+     'hobbies': new FormArray([ new FormControl(), new FormControl() ]),
+    });
+    
+    // this.signUpForm.valueChanges.subscribe(
+    //   (value) => {console.log(value);}
+    // );
+    
+    // this.signUpForm.statusChanges.subscribe(
+    //   (value) => {console.log(value);}
+    // )
+
+    // this.signUpForm.setValue({
+    //   'userData'  : {
+    //     'username': 'bharath',
+    //     'email'   : 'bharathgorental@gmail.com'
+    //   },
+    //   'gender'    : 'male',
+    //   'hobbies'   : ['coding', 'music'],
+    // });
+
+    // this.signUpForm.patchValue({
+    //   'userData' : {
+    //     'username': 'Bharath Gorental',
+    //   }
+    // })
   }
 
   onSubmit(){
@@ -36,4 +63,17 @@ export class AppComponent implements OnInit{
    }
    return null;
   }
+
+  forBiddenEmails(control : FormControl): Promise<any> | Observable<any> {
+    const promise = new Promise<any>((resolve, reject) => {
+      setTimeout(()=>{
+        if(control.value === 'test@gmail.com'){
+          resolve({'emailIsForbidden' : true})
+        }else{
+          resolve(null);
+        }
+      }, 1500)
+  });
+  return promise;
+}
 }

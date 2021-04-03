@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { Observable } from 'rxjs';
-import { max } from 'rxjs-compat/operator/max';
+
 
 @Component({
   selector: 'app-root',
@@ -22,7 +22,7 @@ export class AppComponent implements OnInit{
       'email': new FormControl(null, [Validators.required, Validators.email], [this.forBiddenEmails.bind(this)]),
      }),
      'gender': new FormControl('male'),
-     'hobbies': new FormArray([ new FormControl(), new FormControl() ]),
+     'hobbies': new FormArray([ new FormControl()]),
     });
     
     // this.signUpForm.valueChanges.subscribe(
@@ -39,7 +39,7 @@ export class AppComponent implements OnInit{
     //     'email'   : 'bharathgorental@gmail.com'
     //   },
     //   'gender'    : 'male',
-    //   'hobbies'   : ['coding', 'music'],
+    //   'hobbies'   : ['coding'],
     // });
 
     // this.signUpForm.patchValue({
